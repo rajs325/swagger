@@ -1,0 +1,227 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server wrkspot server. For this sample, you can use the api key `special-key` to test the authorization filters."
+  version: "1.0.0"
+  title: "Swagger Wrkspot"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@wrkspot.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "foobar.free.beeceptor.com"
+
+tags:
+- name: "Employee"
+  description: "Everything about your employees"
+  externalDocs:
+    description: "Find out more about employees"
+    url: "cloud.wrkspot.com/api"
+- name: "Site"
+  description: "Everything about your properties"
+  externalDocs:
+    description: "Find out more about properties"
+    url: "cloud.wrkspot.com/api"
+schemes:
+- "https"
+- "http"
+
+paths:
+  /employee:
+    post:
+      tags:
+      - "Employee"
+      summary: "Add a new employee to the site"
+      description: ""
+      operationId: "addEmployee"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Employee object that needs to be added to the site"
+        required: true
+        schema:
+          $ref: "#/definitions/Employee"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Entity not found"
+        405:
+          description: "Method not allowed"
+        422:
+          description: "Invalid post body, please check and try again"
+      security:
+      - wrkspot_auth:
+        - "write:employee"
+        - "read:employee"
+  /employees:
+    get:
+      tags:
+      - "Employees"
+      summary: "List all employees"
+      description: ""
+      operationId: "getEmployees"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Entity not found"
+        405:
+          description: "Method not allowed"
+        422:
+          description: "Invalid post body, please check and try again"
+      security:
+      - wrkspot_auth:
+        - "write:employee"
+        - "read:employee"
+  /site:
+    post:
+      tags:
+      - "Site"
+      summary: "Add a new site"
+      description: ""
+      operationId: "addSite"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Site object"
+        required: true
+        schema:
+          $ref: "#/definitions/Site"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Entity not found"
+        405:
+          description: "Method not allowed"
+        422:
+          description: "Invalid post body, please check and try again"
+      security:
+      - wrkspot_auth:
+        - "write:employee"
+        - "read:employee"
+securityDefinitions:
+  wrkspot_auth:
+    type: "oauth2"
+    authorizationUrl: "http://cloud.wrkspot.com/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:employee: "modify employee in your site"
+      read:employee: "read your employee"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Employee:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      firstName:
+        type: "string"
+        description: "First Name"
+      lastName:
+        type: "string"
+        description: "Last Name"
+      email:
+        type: "string"
+        description: "EMail Eg., john.doe@somemail.com"
+      phone:
+        type: "string"
+        description: "Phone Eg., (310) 456-7890"
+      site:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Employee"
+  Site:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        description: "Name"
+      address:
+        type: "string"
+        description: "Address Eg., 2381 Morse Ave, Irvine, CA 92614"
+      phone:
+        type: "string"
+        description: "Phone Eg., (949) 224-3900"
+
+    xml:
+      name: "Site"
+  Department:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        description: "Name"
+      site:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Department"
+  Role:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        description: "Name"
+      department:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Department"
+  Timesheet:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      date:
+        type: "string"
+        description: "Date of work Et., 05/10/2019"
+      hours:
+        type: "number"
+        description: "Total hours worked Eg., 2.45 to indicate 2 hours and 45 minutes"
+      employee:
+        type: "integer"
+        format: "int64"
+      site:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Department"
+# Added by API Auto Mocking Plugin
+# basePath: /rajs325/wrkspot-swagger-api/Auto-mocking/1.0.0
+# Added by API Auto Mocking Plugin
+basePath: /wrkspot-api
